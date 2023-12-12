@@ -67,7 +67,6 @@ export async function updateItemQuantity(
     lineId: string;
     variantId: string;
     quantity: number;
-    attributes: { key: string; value: string }[];
   }
 ) {
   const cartId = cookies().get('cartId')?.value;
@@ -76,7 +75,7 @@ export async function updateItemQuantity(
     return 'Missing cart ID';
   }
 
-  const { lineId, variantId, quantity, attributes } = payload;
+  const { lineId, variantId, quantity } = payload;
 
   try {
     if (quantity === 0) {
@@ -89,8 +88,7 @@ export async function updateItemQuantity(
       {
         id: lineId,
         merchandiseId: variantId,
-        quantity,
-        attributes
+        quantity
       }],
     );
     revalidateTag(TAGS.cart);
