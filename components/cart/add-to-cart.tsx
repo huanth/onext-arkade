@@ -10,12 +10,10 @@ import { useFormState, useFormStatus } from 'react-dom';
 
 function SubmitButton({
   availableForSale,
-  selectedVariantId,
-  attributes
+  selectedVariantId
 }: {
   availableForSale: boolean;
   selectedVariantId: string | undefined;
-  attributes: {key: string, value: string}[];
 }) {
   const { pending } = useFormStatus();
   const buttonClasses =
@@ -66,12 +64,10 @@ function SubmitButton({
 
 export function AddToCart({ 
   variants,
-  availableForSale,
-  attributes,
+  availableForSale
 }: {
   variants: ProductVariant[];
   availableForSale: boolean;
-  attributes: {key: string, value: string}[];
 }) {
   const [message, formAction] = useFormState(addItem, null);
   const searchParams = useSearchParams();
@@ -87,7 +83,7 @@ export function AddToCart({
 
   return (
     <form action={actionWithVariant}>
-      <SubmitButton availableForSale={availableForSale} selectedVariantId={selectedVariantId} attributes={attributes} />
+      <SubmitButton availableForSale={availableForSale} selectedVariantId={selectedVariantId} />
       <p aria-live="polite" className="sr-only" role="status">
         {message}
       </p>
