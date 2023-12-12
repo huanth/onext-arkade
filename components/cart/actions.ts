@@ -5,7 +5,7 @@ import { addToCart, createCart, getCart, removeFromCart, updateCart } from 'lib/
 import { revalidateTag } from 'next/cache';
 import { cookies } from 'next/headers';
 
-export async function addItem(prevState: any, selectedVariantId: string | undefined, attributes: [{}]) {
+export async function addItem(prevState: any, selectedVariantId: string | undefined) {
   let cartId = cookies().get('cartId')?.value;
   let cart;
 
@@ -26,17 +26,17 @@ export async function addItem(prevState: any, selectedVariantId: string | undefi
     const cartItem = {
       merchandiseId: selectedVariantId,
       quantity: 1,
-      attributes: attributes,
-      // attributes: [
-      //   {
-      //     'key' : 'Name',
-      //     'value' : 'HuanTH',
-      //   },
-      //   {
-      //     'key' : 'Email',
-      //     'value' : 'huanth@aaa.com',
-      //   },
-      // ],
+      // attributes: attributes,
+      attributes: [
+        {
+          'key' : 'Name',
+          'value' : 'HuanTH',
+        },
+        {
+          'key' : 'Email',
+          'value' : 'huanth@aaa.com',
+        },
+      ],
     };
     
     await addToCart(cartId, [cartItem]);
