@@ -5,7 +5,7 @@ import { addToCart, createCart, getCart, removeFromCart, updateCart } from 'lib/
 import { revalidateTag } from 'next/cache';
 import { cookies } from 'next/headers';
 
-export async function addItem(prevState: any, selectedVariantId: string | undefined, attributes: [{}]) {
+export async function addItem(prevState: any, selectedVariantId: string | undefined, attributes: { key: string; value: string }[]) {
   let cartId = cookies().get('cartId')?.value;
   let cart;
 
@@ -67,7 +67,7 @@ export async function updateItemQuantity(
     lineId: string;
     variantId: string;
     quantity: number;
-    attributes: any;
+    attributes: { key: string; value: string }[];
   }
 ) {
   const cartId = cookies().get('cartId')?.value;

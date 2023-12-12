@@ -212,7 +212,7 @@ export async function createCart(): Promise<Cart> {
 
 export async function addToCart(
   cartId: string,
-  lines: { merchandiseId: string; quantity: number; attributes:[{}] }[]
+  lines: { merchandiseId: string; quantity: number; attributes: { key: string; value: string }[] }[],
 ): Promise<Cart> {
   const res = await shopifyFetch<ShopifyAddToCartOperation>({
     query: addToCartMutation,
@@ -240,7 +240,7 @@ export async function removeFromCart(cartId: string, lineIds: string[]): Promise
 
 export async function updateCart(
   cartId: string,
-  lines: { id: string; merchandiseId: string; quantity: number, attributes:[{}]}[],
+  lines: { id: string; merchandiseId: string; quantity: number, attributes: { key: string; value: string }[] }[],
 ): Promise<Cart> {
   const res = await shopifyFetch<ShopifyUpdateCartOperation>({
     query: editCartItemsMutation,
