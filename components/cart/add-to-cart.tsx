@@ -71,7 +71,7 @@ export function AddToCart({
 }: {
   variants: ProductVariant[];
   availableForSale: boolean;
-  attributes: [];
+  attributes: {key: string, value: string}[];
 }) {
   const [message, formAction] = useFormState(addItem, null);
   const searchParams = useSearchParams();
@@ -84,7 +84,6 @@ export function AddToCart({
   );
   const selectedVariantId = variant?.id || defaultVariantId;
   const actionWithVariant = formAction.bind(null, selectedVariantId);
-
 
   return (
     <form action={actionWithVariant}>
