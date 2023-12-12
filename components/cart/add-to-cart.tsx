@@ -10,10 +10,12 @@ import { useFormState, useFormStatus } from 'react-dom';
 
 function SubmitButton({
   availableForSale,
-  selectedVariantId
+  selectedVariantId,
+  attributes
 }: {
   availableForSale: boolean;
   selectedVariantId: string | undefined;
+  attributes: [];
 }) {
   const { pending } = useFormStatus();
   const buttonClasses =
@@ -42,7 +44,6 @@ function SubmitButton({
       </button>
     );
   }
-
   return (
     <button
       onClick={(e: React.FormEvent<HTMLButtonElement>) => {
@@ -63,16 +64,19 @@ function SubmitButton({
   );
 }
 
-export function AddToCart({
+export function AddToCart({ 
   variants,
-  availableForSale
+  availableForSale,
+  attributes,
 }: {
   variants: ProductVariant[];
   availableForSale: boolean;
+  attributes: [];
 }) {
   const [message, formAction] = useFormState(addItem, null);
   const searchParams = useSearchParams();
   const defaultVariantId = variants.length === 1 ? variants[0]?.id : undefined;
+
   const variant = variants.find((variant: ProductVariant) =>
     variant.selectedOptions.every(
       (option) => option.value === searchParams.get(option.name.toLowerCase())
@@ -81,9 +85,10 @@ export function AddToCart({
   const selectedVariantId = variant?.id || defaultVariantId;
   const actionWithVariant = formAction.bind(null, selectedVariantId);
 
+
   return (
     <form action={actionWithVariant}>
-      <SubmitButton availableForSale={availableForSale} selectedVariantId={selectedVariantId} />
+      <SubmitButton availableForSale={availableForSale} selectedVariantId={selectedVariantId} attributes={attributes} />
       <p aria-live="polite" className="sr-only" role="status">
         {message}
       </p>

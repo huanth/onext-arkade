@@ -5,7 +5,7 @@ import { addToCart, createCart, getCart, removeFromCart, updateCart } from 'lib/
 import { revalidateTag } from 'next/cache';
 import { cookies } from 'next/headers';
 
-export async function addItem(prevState: any, selectedVariantId: string | undefined) {
+export async function addItem(prevState: any, selectedVariantId: string | undefined, attributes: [{}]) {
   let cartId = cookies().get('cartId')?.value;
   let cart;
 
@@ -22,12 +22,27 @@ export async function addItem(prevState: any, selectedVariantId: string | undefi
   if (!selectedVariantId) {
     return 'Missing product variant ID';
   }
-
-  try {
-    await addToCart(cartId, [{ merchandiseId: selectedVariantId, quantity: 1 }]);
+  try { 
+    const cartItem = {
+      merchandiseId: selectedVariantId,
+      quantity: 1,
+      attributes: attributes,
+      // attributes: [
+      //   {
+      //     'key' : 'Name',
+      //     'value' : 'HuanTH',
+      //   },
+      //   {
+      //     'key' : 'Email',
+      //     'value' : 'huanth@aaa.com',
+      //   },
+      // ],
+    };
+    
+    await addToCart(cartId, [cartItem]);
     revalidateTag(TAGS.cart);
   } catch (e) {
-    return 'Error adding item to cart';
+    return 'Error adding item to cart' + JSON.stringify(e);
   }
 }
 
@@ -52,6 +67,7 @@ export async function updateItemQuantity(
     lineId: string;
     variantId: string;
     quantity: number;
+    attributes: any;
   }
 ) {
   const cartId = cookies().get('cartId')?.value;
@@ -60,7 +76,7 @@ export async function updateItemQuantity(
     return 'Missing cart ID';
   }
 
-  const { lineId, variantId, quantity } = payload;
+  const { lineId, variantId, quantity, attributes } = payload;
 
   try {
     if (quantity === 0) {
@@ -73,9 +89,10 @@ export async function updateItemQuantity(
       {
         id: lineId,
         merchandiseId: variantId,
-        quantity
-      }
-    ]);
+        quantity,
+        attributes
+      }],
+    );
     revalidateTag(TAGS.cart);
   } catch (e) {
     return 'Error updating item quantity';
